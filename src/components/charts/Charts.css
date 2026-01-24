@@ -1,0 +1,55 @@
+/* ====================================
+   CHART STYLES
+   ==================================== */
+
+.chart-container {
+  width: 100%;
+  position: relative;
+}
+
+.pie-chart {
+  height: 280px;
+}
+
+.bar-chart {
+  height: 300px;
+}
+
+/* ====================================
+   EMPTY STATE
+   ==================================== */
+
+.chart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.chart-empty p {
+  font-size: var(--font-base);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.chart-empty span {
+  font-size: var(--font-sm);
+}
+
+/* ====================================
+   RESPONSIVE
+   ==================================== */
+
+@media (max-width: 768px) {
+  .pie-chart {
+    height: 320px;
+  }
+
+  .bar-chart {
+    height: 250px;
+  }
+}

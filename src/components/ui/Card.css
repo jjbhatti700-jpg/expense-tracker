@@ -1,0 +1,73 @@
+/* ====================================
+   CARD COMPONENT STYLES
+   ==================================== */
+
+.card {
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+/* ====================================
+   VARIANTS
+   ==================================== */
+
+.card-default {
+  border: 1px solid var(--color-border);
+}
+
+.card-elevated {
+  border: none;
+  box-shadow: var(--shadow-md);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.card-outlined {
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+}
+
+/* ====================================
+   PADDING VARIANTS
+   ==================================== */
+
+.card-padding-none {
+  padding: 0;
+}
+
+.card-padding-sm {
+  padding: var(--spacing-sm);
+}
+
+.card-padding-md {
+  padding: var(--spacing-md);
+}
+
+.card-padding-lg {
+  padding: var(--spacing-lg);
+}
+
+/* ====================================
+   SUB-COMPONENTS
+   ==================================== */
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+}
+
+.card-title {
+  font-size: var(--font-lg);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.card-content {
+  color: var(--color-text-secondary);
+}

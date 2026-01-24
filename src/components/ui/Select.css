@@ -1,0 +1,93 @@
+/* ====================================
+   SELECT COMPONENT STYLES
+   ==================================== */
+
+.select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  width: 100%;
+}
+
+.select-label {
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+}
+
+/* ====================================
+   SELECT CONTAINER (for custom arrow)
+   ==================================== */
+
+.select-container {
+  position: relative;
+  width: 100%;
+}
+
+/* ====================================
+   SELECT FIELD
+   ==================================== */
+
+.select {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  padding-right: 40px; /* Space for arrow */
+  font-size: var(--font-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  appearance: none; /* Remove default arrow */
+  transition: all var(--transition-fast);
+  height: 44px;
+}
+
+/* Fix dropdown options colors */
+.select option {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  padding: var(--spacing-sm);
+}
+
+.select:hover:not(:disabled) {
+  border-color: var(--color-border-hover);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ====================================
+   CUSTOM ARROW
+   ==================================== */
+
+.select-arrow {
+  position: absolute;
+  right: var(--spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  pointer-events: none; /* Click passes through to select */
+}
+
+/* ====================================
+   ERROR STATE
+   ==================================== */
+
+.select-error {
+  border-color: var(--color-danger);
+}
+
+.select-error-text {
+  font-size: var(--font-xs);
+  color: var(--color-danger);
+}

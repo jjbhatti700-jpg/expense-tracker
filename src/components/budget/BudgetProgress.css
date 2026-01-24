@@ -1,0 +1,152 @@
+/* ====================================
+   BUDGET PROGRESS STYLES
+   ==================================== */
+
+.budget-progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.budget-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.budget-empty p {
+  font-size: var(--font-base);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.budget-empty span {
+  font-size: var(--font-sm);
+}
+
+/* ====================================
+   BUDGET ITEM
+   ==================================== */
+
+.budget-item {
+  padding: var(--spacing-md);
+  background-color: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-success);
+}
+
+.budget-item.warning {
+  border-left-color: var(--color-warning);
+}
+
+.budget-item.exceeded {
+  border-left-color: var(--color-danger);
+}
+
+.budget-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.budget-category {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.budget-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+}
+
+.budget-label {
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-primary);
+}
+
+.budget-status-icon {
+  display: flex;
+  align-items: center;
+}
+
+.status-ok {
+  color: var(--color-success);
+}
+
+.status-warning {
+  color: var(--color-warning);
+}
+
+.status-exceeded {
+  color: var(--color-danger);
+}
+
+/* ====================================
+   PROGRESS BAR
+   ==================================== */
+
+.budget-bar-container {
+  height: 8px;
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--spacing-sm);
+}
+
+.budget-bar {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background-color: var(--color-success);
+  transition: width var(--transition-normal);
+}
+
+.budget-bar.warning {
+  background-color: var(--color-warning);
+}
+
+.budget-bar.exceeded {
+  background-color: var(--color-danger);
+}
+
+/* ====================================
+   BUDGET DETAILS
+   ==================================== */
+
+.budget-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-xs);
+}
+
+.budget-spent {
+  color: var(--color-text-primary);
+  font-weight: var(--font-medium);
+}
+
+.budget-limit {
+  color: var(--color-text-muted);
+}
+
+.budget-percentage {
+  font-weight: var(--font-semibold);
+  color: var(--color-success);
+}
+
+.budget-percentage.warning {
+  color: var(--color-warning);
+}
+
+.budget-percentage.exceeded {
+  color: var(--color-danger);
+}
