@@ -1,8 +1,10 @@
+// API Service - Production Build v2
 import { Transaction, NewTransaction, CategoryInfo } from '../types'
 
 // ====================================
 // API CONFIGURATION
 // ====================================
+
 const API_BASE_URL = 'https://victorious-playfulness-production.up.railway.app/api'
 
 // ====================================
