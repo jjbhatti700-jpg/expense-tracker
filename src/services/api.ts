@@ -5,7 +5,7 @@ import { Transaction, NewTransaction, CategoryInfo } from '../types'
 // API CONFIGURATION
 // ====================================
 
-const API_BASE_URL = 'https://victorious-playfulness-production.up.railway.app/api'
+const API_BASE_URL = 'https://expense-tracker-production-b930.up.railway.app/api'
 
 // ====================================
 // TOKEN MANAGEMENT
