@@ -6,11 +6,11 @@ import mongoose from 'mongoose'
 
 dotenv.config()
 
-import transactionRoutes from './src/routes/transactionRoutes'
-import categoryRoutes from './src/routes/categoryRoutes'
-import authRoutes from './src/routes/authRoutes'
-import emailRoutes from './src/routes/emailRoutes'
-import { seedCategories } from './src/controllers/categoryController'
+import transactionRoutes from '../server/src/routes/transactionRoutes'
+import categoryRoutes from '../server/src/routes/categoryRoutes'
+import authRoutes from '../server/src/routes/authRoutes'
+import emailRoutes from '../server/src/routes/emailRoutes'
+import { seedCategories } from '../server/src/controllers/categoryController'
 
 const app: Express = express()
 
