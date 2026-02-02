@@ -5,7 +5,7 @@ import { Transaction, NewTransaction, CategoryInfo } from '../types'
 // API CONFIGURATION
 // ====================================
 
-const API_BASE_URL = 'https://expense-tracker-production-b930.up.railway.app/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://expense-tracker-tau-three-46.vercel.app/api'
 
 // ====================================
 // TOKEN MANAGEMENT
