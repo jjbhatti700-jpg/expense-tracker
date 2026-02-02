@@ -1,11 +1,7 @@
-import { Request, Response } from 'express';
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const app = express();
 
@@ -36,8 +32,7 @@ async function connectDB() {
   }
 }
 
-// Health check route
-app.get('/api/health', (req: Request, res: Response) => {
+app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
     message: 'ExpenseFlow API is running',
@@ -45,15 +40,14 @@ app.get('/api/health', (req: Request, res: Response) => {
   });
 });
 
-// 404 handler
-app.use((req: Request, res: Response) => {
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: 'Route not found',
   });
 });
 
-export default async function handler(req: any, res: any) {
+module.exports = async function handler(req, res) {
   await connectDB();
   return app(req, res);
-}
+};
