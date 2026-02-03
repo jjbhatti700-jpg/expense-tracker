@@ -45,18 +45,28 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const checkAuth = async () => {
       const token = getAuthToken()
       
-      if (token) {
-        try {
-          const response = await authApi.getMe()
-          if (response.success && response.data) {
-            setUser(response.data)
-          }
-        } catch (err) {
-          setAuthToken(null)
-        }
+      if (!token) {
+        setIsLoading(false)
+        return
       }
-      
-      setIsLoading(false)
+
+      try {
+        const response = await authApi.getMe()
+        if (response.success && response.data) {
+          setUser(response.data)
+        } else {
+          // If response is not successful, clear token and user
+          setAuthToken(null)
+          setUser(null)
+        }
+      } catch (err) {
+        // If token is invalid or expired, clear everything
+        console.error('Auth check failed:', err)
+        setAuthToken(null)
+        setUser(null)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     checkAuth()
@@ -72,6 +82,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (response.success && response.data) {
         setAuthToken(response.data.token)
         setUser(response.data.user)
+      } else {
+        throw new Error('Login failed')
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Login failed'
@@ -92,6 +104,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (response.success && response.data) {
         setAuthToken(response.data.token)
         setUser(response.data.user)
+      } else {
+        throw new Error('Signup failed')
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Signup failed'
