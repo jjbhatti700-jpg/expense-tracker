@@ -3,7 +3,11 @@
   "rewrites": [
     {
       "source": "/api/categories/:id",
-      "destination": "/api/categories"
+      "destination": "/api/categories?id=:id"
+    },
+    {
+      "source": "/api/transactions/:id",
+      "destination": "/api/transactions/[id]"
     }
   ]
 }
