@@ -43,17 +43,21 @@ export default async (req, res) => {
   try {
     await connectDB();
 
-    const pathParts = req.url.split('/').filter(Boolean);
-    const categoryId = pathParts[pathParts.length - 1];
+  // Extract category ID from URL if present
+// URL will be like /api/categories or /api/categories/697c4e7f7a0cda564d185768
+const urlPath = req.url || '';
+const match = urlPath.match(/\/api\/categories\/([^?]+)/);
+const categoryId = match ? match[1] : null;
 
-    // GET all categories
-    if (req.method === 'GET' && pathParts.length === 2) {
+// GET all categories
+if (req.method === 'GET' && !categoryId) {
       const categories = await Category.find().sort({ isDefault: -1, label: 1 });
       return res.status(200).json({ success: true, count: categories.length, data: categories });
     }
 
     // GET single category
-    if (req.method === 'GET' && pathParts.length === 3) {
+  // GET single category
+if (req.method === 'GET' && categoryId) {
       const category = await Category.findOne({ 
         $or: [{ id: categoryId }, { _id: categoryId }] 
       });
@@ -66,7 +70,8 @@ export default async (req, res) => {
     }
 
     // PUT - Update category
-    if (req.method === 'PUT' && pathParts.length === 3) {
+    // PUT - Update category
+if (req.method === 'PUT' && categoryId) {
       const { label, icon, color, budget } = req.body;
 
       const category = await Category.findOne({ 
