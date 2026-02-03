@@ -49,23 +49,34 @@ const { isAuthenticated } = useAuth()
   // ====================================
 
   const fetchCategories = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
+     // Don't fetch if no token
+  const token = localStorage.getItem('token')
+  if (!token) {
+    setIsLoading(false)
+    return
+  }
 
-      const response = await categoryApi.getAll()
-
-      if (response.success && response.data) {
-        setCategories(response.data)
-      }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch categories'
-      setError(message)
-      console.error('Error fetching categories:', err)
-    } finally {
-      setIsLoading(false)
+  try {
+    setIsLoading(true)
+    setError(null)
+    
+    const response = await categoryApi.getAll()
+    
+    if (response.success && response.data) {
+      const transformedData = response.data.map((t: any) => ({
+        ...t,
+        id: t._id || t.id,
+      }))
+      setCategories(transformedData)
     }
-  }, [])
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Failed to fetch transactions'
+    setError(message)
+    console.error('Error fetching transactions:', err)
+  } finally {
+    setIsLoading(false)
+  }
+}, [])
 
  // Fetch categories ONLY if authenticated
 useEffect(() => {

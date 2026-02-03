@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { Transaction, NewTransaction } from '../types'
 import { transactionApi } from '../services/api'
-import { useAuth } from './AuthContext'
+
 
 // ====================================
 // TYPES
@@ -34,7 +34,7 @@ interface TransactionProviderProps {
 // ====================================
 
 const TransactionContext = createContext<TransactionContextType | undefined>(undefined)
-const { isAuthenticated } = useAuth()
+
 // ====================================
 // PROVIDER COMPONENT
 // ====================================
@@ -48,36 +48,40 @@ export function TransactionProvider({ children }: TransactionProviderProps) {
   // FETCH TRANSACTIONS
   // ====================================
   
-  const fetchTransactions = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
-      
-      const response = await transactionApi.getAll()
-      
-      if (response.success && response.data) {
-        // Transform _id to id for frontend compatibility
-        const transformedData = response.data.map((t: any) => ({
-          ...t,
-          id: t._id || t.id,
-        }))
-        setTransactions(transformedData)
-      }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch transactions'
-      setError(message)
-      console.error('Error fetching transactions:', err)
-    } finally {
-      setIsLoading(false)
+const fetchTransactions = useCallback(async () => {
+  // Don't fetch if no token
+  const token = localStorage.getItem('token')
+  if (!token) {
+    setIsLoading(false)
+    return
+  }
+
+  try {
+    setIsLoading(true)
+    setError(null)
+    
+    const response = await transactionApi.getAll()
+    
+    if (response.success && response.data) {
+      const transformedData = response.data.map((t: any) => ({
+        ...t,
+        id: t._id || t.id,
+      }))
+      setTransactions(transformedData)
     }
-  }, [])
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Failed to fetch transactions'
+    setError(message)
+    console.error('Error fetching transactions:', err)
+  } finally {
+    setIsLoading(false)
+  }
+}, [])
 
 // Fetch on mount ONLY if authenticated
 useEffect(() => {
-  if (isAuthenticated) {
-    fetchTransactions()
-  }
-}, [isAuthenticated, fetchTransactions])
+  fetchTransactions()
+}, [fetchTransactions])
   // ====================================
   // ACTIONS
   // ====================================
