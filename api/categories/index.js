@@ -43,9 +43,48 @@ export default async (req, res) => {
   try {
     await connectDB();
 
-    if (req.method === 'GET') {
+    const pathParts = req.url.split('/').filter(Boolean);
+    const categoryId = pathParts[pathParts.length - 1];
+
+    // GET all categories
+    if (req.method === 'GET' && pathParts.length === 2) {
       const categories = await Category.find().sort({ isDefault: -1, label: 1 });
       return res.status(200).json({ success: true, count: categories.length, data: categories });
+    }
+
+    // GET single category
+    if (req.method === 'GET' && pathParts.length === 3) {
+      const category = await Category.findOne({ 
+        $or: [{ id: categoryId }, { _id: categoryId }] 
+      });
+      
+      if (!category) {
+        return res.status(404).json({ success: false, message: 'Category not found' });
+      }
+
+      return res.status(200).json({ success: true, data: category });
+    }
+
+    // PUT - Update category
+    if (req.method === 'PUT' && pathParts.length === 3) {
+      const { label, icon, color, budget } = req.body;
+
+      const category = await Category.findOne({ 
+        $or: [{ id: categoryId }, { _id: categoryId }] 
+      });
+
+      if (!category) {
+        return res.status(404).json({ success: false, message: 'Category not found' });
+      }
+
+      if (label) category.label = label;
+      if (icon) category.icon = icon;
+      if (color) category.color = color;
+      if (budget !== undefined) category.budget = budget;
+
+      await category.save();
+
+      return res.status(200).json({ success: true, data: category });
     }
 
     return res.status(405).json({ success: false, message: 'Method not allowed' });
