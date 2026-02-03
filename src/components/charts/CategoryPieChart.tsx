@@ -5,9 +5,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
-import { useTransactions, useTheme } from '../../context'
-import { CATEGORIES } from '../../utils/constants'
-import { Category } from '../../types'
+import { useTransactions, useTheme, useCategories } from '../../context'
+// Remove the CATEGORIES import
 import './Charts.css'
 
 // Register Chart.js components
@@ -16,7 +15,8 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 function CategoryPieChart() {
   const { transactions } = useTransactions()
   const { isDarkMode } = useTheme()
-
+const { getCategoriesMap } = useCategories()
+const CATEGORIES = getCategoriesMap()
   // Colors based on theme
   const textColor = isDarkMode ? '#ffffff' : '#0f172a'
   const textMutedColor = isDarkMode ? '#a0a0a0' : '#475569'
