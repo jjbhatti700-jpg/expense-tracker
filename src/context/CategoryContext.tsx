@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { CategoryInfo, NewCategory } from '../types'
 import { categoryApi } from '../services/api'
+import { useAuth } from './AuthContext'
 
 // ====================================
 // TYPES
@@ -41,6 +42,7 @@ export function CategoryProvider({ children }: CategoryProviderProps) {
   const [categories, setCategories] = useState<CategoryInfo[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+const { isAuthenticated } = useAuth() 
 
   // ====================================
   // FETCH CATEGORIES
@@ -65,11 +67,12 @@ export function CategoryProvider({ children }: CategoryProviderProps) {
     }
   }, [])
 
-  // Fetch on mount
-  useEffect(() => {
+ // Fetch categories ONLY if authenticated
+useEffect(() => {
+  if (isAuthenticated) {
     fetchCategories()
-  }, [fetchCategories])
-
+  }
+}, [isAuthenticated, fetchCategories])
   // ====================================
   // ACTIONS
   // ====================================

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { Transaction, NewTransaction } from '../types'
 import { transactionApi } from '../services/api'
+import { useAuth } from './AuthContext'
 
 // ====================================
 // TYPES
@@ -33,7 +34,7 @@ interface TransactionProviderProps {
 // ====================================
 
 const TransactionContext = createContext<TransactionContextType | undefined>(undefined)
-
+const { isAuthenticated } = useAuth()
 // ====================================
 // PROVIDER COMPONENT
 // ====================================
@@ -71,11 +72,12 @@ export function TransactionProvider({ children }: TransactionProviderProps) {
     }
   }, [])
 
-  // Fetch on mount
-  useEffect(() => {
+// Fetch on mount ONLY if authenticated
+useEffect(() => {
+  if (isAuthenticated) {
     fetchTransactions()
-  }, [fetchTransactions])
-
+  }
+}, [isAuthenticated, fetchTransactions])
   // ====================================
   // ACTIONS
   // ====================================
