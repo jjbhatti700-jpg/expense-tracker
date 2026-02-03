@@ -72,7 +72,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
-    const user = await User.findById((req as any).user.id)
+    // Check if user is attached to request (from protect middleware)
+    if (!req.user || !req.user.id) {
+      res.status(401).json({ success: false, message: 'Not authorized' })
+      return
+    }
+
+    const user = await User.findById(req.user.id)
 
     if (!user) {
       res.status(404).json({ success: false, message: 'User not found' })
