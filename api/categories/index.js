@@ -42,12 +42,7 @@ async function connectDB() {
 export default async (req, res) => {
   try {
     await connectDB();
-
-  // Extract category ID from URL if present
-// URL will be like /api/categories or /api/categories/697c4e7f7a0cda564d185768
-const urlPath = req.url || '';
-const match = urlPath.match(/\/api\/categories\/([^?]+)/);
-const categoryId = match ? match[1] : null;
+const categoryId = req.query.id || null;
 
 // GET all categories
 if (req.method === 'GET' && !categoryId) {
