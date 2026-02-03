@@ -233,17 +233,15 @@ export const categoryApi = {
     return handleResponse<ApiResponse<CategoryInfo>>(response)
   },
 
-  // Update category
-  update: async (id: string, category: Partial<NewCategory>): Promise<ApiResponse<CategoryInfo>> => {
-    const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(category),
-    })
-    return handleResponse<ApiResponse<CategoryInfo>>(response)
-  },
+// Update category
+update: async (id: string, category: Partial<NewCategory>): Promise<ApiResponse<CategoryInfo>> => {
+  const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+    method: 'PUT',
+    headers: getHeaders(),
+    body: JSON.stringify(category),
+  })
+  return handleResponse<ApiResponse<CategoryInfo>>(response)
+},
 
   // Delete category
   delete: async (id: string): Promise<ApiResponse<null>> => {

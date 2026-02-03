@@ -104,24 +104,21 @@ useEffect(() => {
     }
   }
 
-  // Update existing category
-  // Update existing category
+// Update existing category
 const updateCategory = async (id: string, updatedData: Partial<NewCategory>) => {
   try {
     setError(null)
     const response = await categoryApi.update(id, updatedData)
 
     if (response.success && response.data) {
+      const updatedCategory = {
+        ...response.data,
+        id: (response.data as any)._id || response.data.id
+      }
       setCategories(prev =>
         prev.map(c => {
-          const categoryId = (c as any)._id || c.id
-          if (categoryId === id) {
-            return {
-              ...response.data!,
-              id: (response.data as any)._id || response.data!.id
-            }
-          }
-          return c
+          const cId = (c as any)._id || c.id
+          return cId === id ? updatedCategory : c
         })
       )
     }
@@ -162,12 +159,12 @@ const updateCategory = async (id: string, updatedData: Partial<NewCategory>) => 
   const getCategoryById = (id: string): CategoryInfo | undefined => {
     return categories.find(c => c.id === id)
   }
-
-  const getCategoriesMap = (): Record<string, CategoryInfo> => {
+const getCategoriesMap = (): Record<string, CategoryInfo> => {
   return categories.reduce((acc, cat) => {
-    const catId = (cat as any)._id || cat.id
-    acc[catId] = cat
-    acc[cat.id] = cat
+    const mongoId = (cat as any)._id
+    const regularId = cat.id
+    if (mongoId) acc[mongoId] = cat
+    if (regularId) acc[regularId] = cat
     return acc
   }, {} as Record<string, CategoryInfo>)
 }
