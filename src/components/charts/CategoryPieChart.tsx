@@ -5,6 +5,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
+import { Category } from '../../types'
 import { useTransactions, useTheme, useCategories } from '../../context'
 // Remove the CATEGORIES import
 import './Charts.css'

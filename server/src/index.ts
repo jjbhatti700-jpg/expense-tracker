@@ -26,6 +26,7 @@ const PORT = Number(process.env.PORT) || 5000
 
 // Security headers
 app.use(helmet())
+
 // CORS - Allow frontend to access API
 app.use(cors({
   origin: true,
@@ -39,6 +40,31 @@ app.use(express.json())
 
 // Parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }))
+
+// ====================================
+// DATABASE CONNECTION (LAZY)
+// ====================================
+
+let isConnected = false
+
+const ensureConnection = async () => {
+  if (isConnected) return
+  
+  try {
+    await connectDB()
+    await seedCategories()
+    isConnected = true
+    console.log('✅ Database connected')
+  } catch (error) {
+    console.error('❌ Database connection failed:', error)
+  }
+}
+
+// Middleware to ensure DB connection before each request
+app.use(async (req: Request, res: Response, next) => {
+  await ensureConnection()
+  next()
+})
 
 // ====================================
 // ROUTES
@@ -70,25 +96,21 @@ app.use((req: Request, res: Response) => {
   res.status(404).json({
     success: false,
     message: 'Route not found',
+    path: req.path,
   })
 })
 
 // ====================================
-// START SERVER
+// EXPORT FOR VERCEL SERVERLESS
 // ====================================
 
-const startServer = async () => {
-  try {
-    // Connect to MongoDB
-    await connectDB()
+// For Vercel serverless deployment
+export default app
 
-    // Seed default categories
-    await seedCategories()
-
-    // Start listening
-    // Start listening
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`
 ╔════════════════════════════════════════════╗
 ║                                            ║
 ║   🚀 ExpenseFlow API Server                ║
@@ -98,12 +120,6 @@ app.listen(PORT, '0.0.0.0', () => {
 ║   Mode:    ${process.env.NODE_ENV || 'development'}                    ║
 ║                                            ║
 ╚════════════════════════════════════════════╝
-      `)
-})
-  } catch (error) {
-    console.error('❌ Failed to start server:', error)
-    process.exit(1)
-  }
+    `)
+  })
 }
-
-startServer()// Railway deployment fix 
