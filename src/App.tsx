@@ -156,7 +156,9 @@ function App(): JSX.Element {
       alert('Please fill in all fields correctly')
       return
     }
-
+ // ADD THIS DEBUG LINE
+  console.log('Submitting formData:', formData)
+  
     setIsSubmitting(true)
     
     try {

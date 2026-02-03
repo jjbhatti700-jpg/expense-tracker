@@ -105,22 +105,34 @@ useEffect(() => {
   }
 
   // Update existing category
-  const updateCategory = async (id: string, updatedData: Partial<NewCategory>) => {
-    try {
-      setError(null)
-      const response = await categoryApi.update(id, updatedData)
+  // Update existing category
+const updateCategory = async (id: string, updatedData: Partial<NewCategory>) => {
+  try {
+    setError(null)
+    const response = await categoryApi.update(id, updatedData)
 
-      if (response.success && response.data) {
-        setCategories(prev =>
-          prev.map(c => (c.id === id ? response.data! : c))
-        )
-      }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to update category'
-      setError(message)
-      throw err
+    if (response.success && response.data) {
+      setCategories(prev =>
+        prev.map(c => {
+          const categoryId = (c as any)._id || c.id
+          if (categoryId === id) {
+            return {
+              ...response.data!,
+              id: (response.data as any)._id || response.data!.id
+            }
+          }
+          return c
+        })
+      )
     }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Failed to update category'
+    setError(message)
+    throw err
   }
+}
+
+      
 
   // Delete category
   const deleteCategory = async (id: string) => {
@@ -152,11 +164,13 @@ useEffect(() => {
   }
 
   const getCategoriesMap = (): Record<string, CategoryInfo> => {
-    return categories.reduce((acc, cat) => {
-      acc[cat.id] = cat
-      return acc
-    }, {} as Record<string, CategoryInfo>)
-  }
+  return categories.reduce((acc, cat) => {
+    const catId = (cat as any)._id || cat.id
+    acc[catId] = cat
+    acc[cat.id] = cat
+    return acc
+  }, {} as Record<string, CategoryInfo>)
+}
 
   // ====================================
   // PROVIDE VALUE
