@@ -11,7 +11,6 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://expense-tracker-ta
 // TOKEN MANAGEMENT
 // ====================================
 
-let authToken: string | null = localStorage.getItem('token')
 
 export const setAuthToken = (token: string | null) => {
   if (token) {
@@ -24,8 +23,6 @@ export const setAuthToken = (token: string | null) => {
 export const getAuthToken = () => {
   return localStorage.getItem('token')
 }
-
-export const getAuthToken = () => authToken
 
 // ====================================
 // TYPES
@@ -71,13 +68,15 @@ interface AuthResponse {
 // HELPER FUNCTION
 // ====================================
 
+// NEW VERSION - CORRECT
 const getHeaders = (): HeadersInit => {
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
   }
   
-  if (authToken) {
-    headers['Authorization'] = `Bearer ${authToken}`
+  const token = getAuthToken()  // ← Call the function instead
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
   }
   
   return headers
