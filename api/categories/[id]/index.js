@@ -29,8 +29,10 @@ export default async (req, res) => {
     if (req.method === 'PUT') {
       const { label, icon, color, budget } = req.body;
 
-      const category = await Category.findOne({ id });
-
+     // Try to find by custom id first, then by MongoDB _id
+const category = await Category.findOne({ 
+  $or: [{ id }, { _id: id }] 
+});
       if (!category) {
         return res.status(404).json({ success: false, message: 'Category not found' });
       }
