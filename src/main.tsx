@@ -11,8 +11,8 @@ const rootElement = document.getElementById('root')!
 // Providers wrap the app so all components can access the data
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <ThemeProvider>
-      <AuthProvider>
+    <AuthProvider>           {/* ← AuthProvider FIRST */}
+      <ThemeProvider>
         <CurrencyProvider>
           <CategoryProvider>
             <TransactionProvider>
@@ -20,7 +20,7 @@ ReactDOM.createRoot(rootElement).render(
             </TransactionProvider>
           </CategoryProvider>
         </CurrencyProvider>
-      </AuthProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </AuthProvider>
   </React.StrictMode>
 )
