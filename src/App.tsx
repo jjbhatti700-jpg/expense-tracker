@@ -558,15 +558,21 @@ function App(): JSX.Element {
       >
         <div className="form-container">
           <Select
-            label="Transaction Type"
-            options={typeOptions}
-            value={formData.type}
-            onChange={(e) => setFormData(prev => ({
-              ...prev,
-              type: e.target.value as TransactionType,
-              category: e.target.value === 'income' ? 'income' : 'food',
-            }))}
-          />
+  label="Transaction Type"
+  options={typeOptions}
+  value={formData.type}
+  onChange={(e) => {
+    const newType = e.target.value as TransactionType
+    setFormData(prev => ({
+      ...prev,
+      type: newType,
+      // Only reset category when switching TO income
+      category: newType === 'income' 
+        ? 'income' 
+        : (prev.type === 'income' ? (categories.find(c => c.id !== 'income')?.id || 'food') : prev.category),
+    }))
+  }}
+/>
 
           <Input
             label="Amount"
